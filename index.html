@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    🚀 Single-file Portfolio Template (HTML + CSS + JS)
+    Autor: Eduardo Elias Castellanos Picon
+    Cómo usar:
+      1) Copia este archivo completo en VS Code como index.html
+      2) Abre con Live Server (o doble clic) y personaliza secciones
+      3) Sube a GitHub Pages / Netlify / Vercel
+    Tips:
+      - Reemplaza los textos marcados con TODO
+      - Agrega tus proyectos en la sección Projects
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eduardo Elias Castellanos Picon — Web Developer</title>
+  <meta name="description" content="Portfolio of Eduardo Elias Castellanos Picon — Web Developer (HTML, CSS, JavaScript)" />
+  <style>
+    /* ---------- Reset & Base ---------- */
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    :root{
+      --bg:#0b0f14;
+      --bg-2:#0e141b;
+      --text:#e8eef6;
+      --muted:#a7b3c5;
+      --primary:#66e0ff;
+      --accent:#6ee7b7;
+      --card:#121923;
+      --border:#233041;
+      --shadow:0 10px 35px rgba(0,0,0,.35);
+      --radius:18px;
+      --max:1080px;
+    }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #15202b 0%, transparent 60%) no-repeat,
+                  radial-gradient(900px 600px at 90% 10%, #0f1a24 0%, transparent 60%) no-repeat,
+                  var(--bg);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    a{color:var(--primary);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:var(--max);margin:0 auto;padding:0 22px}
+
+    /* ---------- Animated Background Canvas ---------- */
+    #bgCanvas{
+      position:fixed;inset:0;z-index:-1;/* detrás de todo */
+      background:linear-gradient(180deg, rgba(12,18,26,.3), rgba(10,14,20,.6));
+    }
+
+    /* ---------- Navbar ---------- */
+    .navbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:rgba(10,14,20,.55);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      transition:all .25s ease;
+    }
+    .navbar.shrink{padding:6px 0;background:rgba(10,14,20,.75)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 16px var(--primary)}
+    .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+    .nav-links a{
+      padding:10px 14px;border-radius:12px;color:var(--text);border:1px solid transparent;
+    }
+    .nav-links a:hover{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+
+    /* ---------- Sections ---------- */
+    section{padding:90px 0}
+    .hero{
+      padding:120px 0 90px 0;position:relative;isolation:isolate;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 12px;border:1px solid var(--border);border-radius:999px;
+      background:rgba(255,255,255,.04);
+      color:var(--muted);font-size:.9rem
+    }
+    .hero-grid{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;
+    }
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+    .title{
+      font-size:clamp(36px,6vw,62px);
+      line-height:1.05;margin:16px 0 10px 0;font-weight:800;
+      letter-spacing:.2px;
+    }
+    .title span{background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .subtitle{color:var(--muted);font-size:clamp(16px,2.4vw,18px);text-align: justify;}
+    .cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+    .btn{
+      padding:12px 16px;border-radius:14px;border:1px solid var(--border);
+      background:linear-gradient(180deg, #121b27, #0f1621);
+      color:var(--text);box-shadow:var(--shadow);font-weight:600
+    }
+    .btn.primary{
+      background:linear-gradient(90deg, var(--primary), #9ae6ff);
+      color:#07232b;border:none
+    }
+    .card{
+      background:linear-gradient(180deg,#101823,#0c121a);
+      border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)
+    }
+
+    /* ---------- Skills ---------- */
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:24px}
+    .section-head h2{margin:0;font-size:clamp(26px,3.6vw,34px)}
+    .skills{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
+    }
+    @media (max-width:700px){.skills{grid-template-columns:1fr 1fr}}
+    .skill{
+      display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:16px
+    }
+    .skill b{letter-spacing:.3px}
+    .meter{width:52%;height:10px;border-radius:999px;background:#0d141c;border:1px solid var(--border);overflow:hidden}
+    .meter > span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),#9ae6ff)}
+
+    /* ---------- Projects ---------- */
+    .projects{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
+    }
+    @media (max-width:900px){.projects{grid-template-columns:1fr 1fr}}
+    @media (max-width:620px){.projects{grid-template-columns:1fr}}
+    .project{
+      padding:18px;border-radius:18px;display:flex;flex-direction:column;gap:12px
+    }
+    .project h3{margin:.2rem 0}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{
+      font-size:.75rem;color:var(--muted);
+      border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03)
+    }
+
+    /* ---------- Contact ---------- */
+    .contact{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center
+    }
+    @media (max-width:900px){.contact{grid-template-columns:1fr}}
+    .contact .card{padding:22px}
+    .contact .note{color:var(--muted)}
+
+    /* ---------- Footer ---------- */
+    footer{padding:36px 0;color:var(--muted);border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+    /* ---------- Reveal Animation ---------- */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+  <!-- ---------- NAV ---------- -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Eduardo Elias</span>
+      </div>
+      <div class="nav-links" role="navigation" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ---------- HERO ---------- -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <span class="pill"> <div></div> 🚀 Desarrollador Junior | Fullstack & Data <div></div></span>
+        <h1 class="title">
+          Hola, Yo soy <span>Eduardo Elias Castellanos Picon</span>
+        </h1>
+        <p class="subtitle">
+“Creo aplicaciones web robustas y de alto rendimiento, aplicando buenas prácticas y tecnologías que garantizan calidad, escalabilidad y una experiencia impecable.”          <!-- TODO: Puedes personalizar este texto de presentación -->
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">View Projects</a>
+          <a class="btn" href="#contact">Contact Me</a>
+        </div>
+      </div>
+
+      <div class="card" style="padding:22px">
+        <h3 style="margin-top:0">A cerca de mi</h3>
+        <p class="subtitle">
+         Ingeniero Petroquímico con visión analítica y formación como Desarrollador Web.
+Además, me desempeño como Analista de Datos con Python, integrando ciencia de datos y programación para crear soluciones prácticas.
+Me apasiona transformar información en valor, aplicar arquitectura limpia en mis proyectos y desarrollar aplicaciones escalables con tecnologías modernas como HTML, CSS, JavaScript, C#/.NET y MySQL.
+        </p>
+        <ul style="margin:0;padding-left:18px;color:var(--muted)">
+          <li>Ubicado en Colombia</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- SKILLS ---------- -->
+  <section id="skills" class="reveal">
+    <div class="container">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <span class="pill">Core Stack</span>
+      </div>
+
+      <div class="skills">
+        <div class="skill card">
+          <b>HTML</b>
+          <div class="meter" aria-label="HTML level"><span style="width: 90%"></span></div>
+        </div>
+        <div class="skill card">
+          <b>CSS</b>
+          <div class="meter" aria-label="CSS level"><span style="width: 85%"></span></div>
+        </div>
+        <div class="skill card">
+          <b>JavaScript</b>
+          <div class="meter" aria-label="JS level"><span style="width: 80%"></span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px" class="reveal">
+        <div class="section-head">
+          <h2>Skills</h2>
+          <span class="pill">+ Extras</span>
+        </div>
+        <div class="skills">
+          <div class="skill card"><b>C# / .NET</b><div class="meter"><span style="width:78%"></span></div></div>
+          <div class="skill card"><b>EF Core</b><div class="meter"><span style="width:76%"></span></div></div>
+          <div class="skill card"><b>MySQL</b><div class="meter"><span style="width:74%"></span></div></div>
+    
+        </div>
+      </div>
+
+      <div style="margin-top:22px" class="reveal">
+        <div class="section-head">
+          <h2>Skills</h2>
+          <span class="pill">+ Extras</span>
+        </div>
+        <div class="skills">
+          <div class="skill card"><b>Python</b><div class="meter"><span style="width:85%"></span></div></div>
+          <div class="skill card"><b>AWS</b><div class="meter"><span style="width:30%"></span></div></div>
+        <div class="skill card"><b>Analisis de datos</b><div class="meter"><span style="width:80%"></span></div></div>
+
+        </div>
+      </div>
+
+
+
+    </div>
+  </section>
+
+  <!-- ---------- PROJECTS ---------- -->
+  <section id="projects" class="reveal">
+    <div class="container">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <span class="pill">Selected Work</span>
+      </div>
+
+      <div class="projects">
+        <!-- Proyecto 1 -->
+        <article class="project card">
+          <h3>Online Sales Data Analysis</h3>
+          <p class="subtitle">“Este repositorio contiene un análisis integral de datos de ventas en línea, con el objetivo de identificar patrones de compra, tendencias del mercado y oportunidades de optimización".</p>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Ciencia de datos</span>
+          </div>
+          <!-- TODO: cambia # por tu repo/demo -->
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/Online-Sales-Data-Analysis.git" target="_blank" rel="noopener">Repository</a>
+            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
+          </div>
+        </article>
+
+        <!-- Proyecto 2 -->
+        <article class="project card">
+          <h3>Analisis de Icfes en Colombia</h3>
+          <p class="subtitle">
+
+          El objetivo principal de este proyecto es utilizar datos históricos de las pruebas SABER ICFES desde el año 2017 hasta el 2023 para predecir los resultados futuros.</p>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">MongDB</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/ICFES-Analysis-ML.git" target="_blank" rel="noopener">Repository</a>
+          </div>
+        </article>
+
+        <!-- Proyecto 3 -->
+        <article class="project card">
+          <h3>Pokemon Arena</h3>
+          <p class="subtitle">Una página web de arena de combates por turnos basada en el universo Pokémon. En esta arena, los entrenadores pueden enfrentarse entre sí o contra la CPU, eligiendo entre Pokémon de la primera y séptima generación.</p>
+          <div class="tags">
+            <span class="tag">JavaScript</span> <span class="tag">Html</span></span><span class="tag">Web Components</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/POKEMON-ARENA.git" target="_blank" rel="noopener">Repository</a>
+            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
+          </div>
+        </article>
+
+
+        <article class="project card">
+          <h3>Time Box</h3>
+          <p class="subtitle">“TimeBox es una aplicación de gestión de tareas intuitiva y eficiente que te ayuda a organizar tus actividades dentro de una interfaz visual de calendario. Incluye autenticación de usuarios, notificaciones por WhatsApp, historial de tareas y personalización de temas.” </p>
+          <div class="tags">
+            <span class="tag">Python</span> <span class="tag">Json</span></span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/TIME_BOX.git" target="_blank" rel="noopener">Repository</a>
+            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
+          </div>
+        </article>
+
+
+        <article class="project card">
+          <h3>Campus Love</h3>
+          <p class="subtitle">“Campus Love es una aplicación de consola desarrollada en C# que simula un sistema de emparejamiento entre personas, permitiendo el registro de usuarios, visualización de perfiles, interacción mediante ‘likes’ y la generación de coincidencias (matches).” </p>
+          <div class="tags">
+            <span class="tag">C#</span> <span class="tag">MySQL</span><span class="tag"> EF Core</span><span class="tag">Arq Hexagonal</span></span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/campuslove-Juliana-Eduardo.git" target="_blank" rel="noopener">Repository</a>
+            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
+          </div>
+        </article>
+
+        <article class="project card">
+          <h3>Burger Menu</h3>
+          <p class="subtitle">“Este proyecto presenta un menú de hamburguesas desarrollado con HTML y CSS, mostrando de manera simple y atractiva una carta digital de restaurante.”</p>
+          <div class="tags">
+            <span class="tag">Html</span><span class="tag">Css</span>
+          <!-- TODO: cambia # por tu repo/demo -->
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a class="btn" href="https://github.com/EduardoCastellanosP/Examen-Html-css.git" target="_blank" rel="noopener">Repository</a>
+             <a class="btn" href="https://burgermenu-exam.netlify.app/" target="_blank" rel="noopener">Live Demo</a> 
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+   
+  <!-- ---------- CONTACT ---------- -->
+  <section id="contact" class="reveal">
+    <div class="container contact">
+      <div class="card">
+        <h2 style="margin-top:0">Contacto</h2>
+        <p class="note">Estoy abierto a colaborar en cualquier proyecto.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+          <a class="btn primary" href="mailto:eduardoeliascastellanospicon@gmail.com">Email</a>
+          <a class="btn" href="https://github.com/EduardoCastellanosP" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/eduardo-elias-castellanos-2284b7212" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">links</h3>
+        <ul style="margin:0;padding-left:18px;color:var(--muted)">
+          <li><a href="#home">Back to top</a></li>
+          <li><a href="#projects">See projects</a></li>
+          <li><a href="#skills">My skills</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Eduardo Elias Castellanos Picon</span>
+      <span>Built with ❤️ using HTML • CSS • JS</span>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- Navbar shrink on scroll ----------
+    const nav = document.querySelector('.navbar');
+    const onScroll = () => nav.classList.toggle('shrink', window.scrollY > 10);
+    window.addEventListener('scroll', onScroll); onScroll();
+
+    // ---------- Reveal on view ----------
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+      })
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // ---------- Year ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------- Animated Background (Particles) ----------
+    // Canvas partículas con parallax y respuesta al mouse. Sin librerías.
+    (function(){
+      const c = document.getElementById('bgCanvas');
+      const ctx = c.getContext('2d');
+      let w, h, dpr, particles = [], mouse = {x:0, y:0}, tick=0;
+
+      function resize(){
+        dpr = Math.max(window.devicePixelRatio || 1, 1);
+        w = c.width = Math.round(innerWidth * dpr);
+        h = c.height = Math.round(innerHeight * dpr);
+        c.style.width = innerWidth + 'px';
+        c.style.height = innerHeight + 'px';
+      }
+      window.addEventListener('resize', resize); resize();
+
+      const COUNT_BASE = 90; // ajusta densidad si quieres más/menos partículas
+      function init(){
+        particles = [];
+        const count = Math.floor((innerWidth*innerHeight)/ (14000)) + COUNT_BASE;
+        for(let i=0;i<count;i++){
+          particles.push({
+            x: Math.random()*w,
+            y: Math.random()*h,
+            vx:(Math.random()-.5)*.18*dpr,
+            vy:(Math.random()-.5)*.18*dpr,
+            r: (Math.random()*1.6 + .6)*dpr,
+            p: Math.random()*2*Math.PI
+          });
+        }
+      }
+      init(); window.addEventListener('resize', init);
+
+      window.addEventListener('mousemove', (e)=>{
+        mouse.x = e.clientX * dpr;
+        mouse.y = e.clientY * dpr;
+      });
+
+      function draw(){
+        tick++;
+        // fondo sutil
+        ctx.clearRect(0,0,w,h);
+        // malla de conexiones
+        for(let i=0;i<particles.length;i++){
+          const a = particles[i];
+          // movimiento base
+          a.x += a.vx; a.y += a.vy;
+          a.p += .005;
+          // envolvente
+          if(a.x<0) a.x=w; if(a.x>w) a.x=0;
+          if(a.y<0) a.y=h; if(a.y>h) a.y=0;
+
+          // atracción leve al mouse
+          const dx = (mouse.x||w/2)-a.x, dy = (mouse.y||h/2)-a.y;
+          const dist = Math.hypot(dx,dy);
+          const force = Math.max(0, 120*dpr - dist) / (120*dpr);
+          a.x -= (dx/dist||0) * (.15*dpr) * force;
+          a.y -= (dy/dist||0) * (.15*dpr) * force;
+        }
+
+        // líneas entre partículas cercanas
+        for(let i=0;i<particles.length;i++){
+          const a = particles[i];
+          for(let j=i+1;j<particles.length;j++){
+            const b = particles[j];
+            const dx = a.x-b.x, dy = a.y-b.y;
+            const d = dx*dx + dy*dy;
+            const max = 90*dpr; // distancia
+            if(d < max*max){
+              const alpha = 0.12 * (1 - Math.sqrt(d)/max);
+              ctx.strokeStyle = `rgba(102,224,255,${alpha})`;
+              ctx.lineWidth = dpr*.6;
+              ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+            }
+          }
+        }
+
+        // partículas
+        for(const p of particles){
+          ctx.fillStyle = 'rgba(158,244,255,.9)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r + Math.sin(p.p)*.3*dpr, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+</body>
+</html>
