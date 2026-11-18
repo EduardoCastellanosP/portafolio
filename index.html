@@ -1,507 +1,955 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <!--
-    🚀 Single-file Portfolio Template (HTML + CSS + JS)
-    Autor: Eduardo Elias Castellanos Picon
-    Cómo usar:
-      1) Copia este archivo completo en VS Code como index.html
-      2) Abre con Live Server (o doble clic) y personaliza secciones
-      3) Sube a GitHub Pages / Netlify / Vercel
-    Tips:
-      - Reemplaza los textos marcados con TODO
-      - Agrega tus proyectos en la sección Projects
-  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Eduardo Elias Castellanos Picon — Web Developer</title>
-  <meta name="description" content="Portfolio of Eduardo Elias Castellanos Picon — Web Developer (HTML, CSS, JavaScript)" />
+  <title>Eduardo Castellanos — Desarrollador de software · Apps móviles & IA</title>
+  <meta name="description" content="Portafolio de Eduardo Elías Castellanos Picón, desarrollador de software enfocado en apps móviles (Flutter, Firebase, Google Cloud), .NET e IA aplicada. Bucaramanga, Colombia." />
+  <meta name="theme-color" content="#05060a" />
+  <meta property="og:title" content="Eduardo Castellanos — Desarrollador de software" />
+  <meta property="og:description" content="Apps móviles, software a medida e IA aplicada." />
+  <meta property="og:image" content="assets/eduardo.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2305060a'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Arial' font-weight='700' font-size='28' fill='%237cc4ff'%3EEC%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <style>
-    /* ---------- Reset & Base ---------- */
-    *,*::before,*::after{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    /* ============ Base ============ */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#0b0f14;
-      --bg-2:#0e141b;
-      --text:#e8eef6;
-      --muted:#a7b3c5;
-      --primary:#66e0ff;
-      --accent:#6ee7b7;
-      --card:#121923;
-      --border:#233041;
-      --shadow:0 10px 35px rgba(0,0,0,.35);
-      --radius:18px;
-      --max:1080px;
+      --bg:#05060a;
+      --bg-2:#090b12;
+      --surface:rgba(255,255,255,.035);
+      --surface-2:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.08);
+      --line-2:rgba(255,255,255,.14);
+      --text:#eef1f7;
+      --muted:#8d95a8;
+      --dim:#5b6274;
+      --a1:#5b8cff;
+      --a2:#7cf3ff;
+      --a3:#a78bfa;
+      --grad:linear-gradient(100deg,var(--a1) 0%,var(--a2) 55%,var(--a3) 100%);
+      --radius:22px;
+      --max:1200px;
+      --ease:cubic-bezier(.16,1,.3,1);
+      --display:"Sora",system-ui,sans-serif;
+      --body:"Inter",system-ui,sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,monospace;
     }
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
     body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 10% -10%, #15202b 0%, transparent 60%) no-repeat,
-                  radial-gradient(900px 600px at 90% 10%, #0f1a24 0%, transparent 60%) no-repeat,
-                  var(--bg);
-      line-height:1.6;
-      overflow-x:hidden;
+      background:var(--bg);color:var(--text);font-family:var(--body);
+      font-size:16px;line-height:1.65;overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
-    a{color:var(--primary);text-decoration:none}
-    img{max-width:100%;display:block}
-    .container{max-width:var(--max);margin:0 auto;padding:0 22px}
+    body.locked{overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    ::selection{background:var(--a1);color:#fff}
+    .container{width:100%;max-width:var(--max);margin:0 auto;padding:0 28px}
+    .mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+    .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    section{position:relative;padding:140px 0}
 
-    /* ---------- Animated Background Canvas ---------- */
-    #bgCanvas{
-      position:fixed;inset:0;z-index:-1;/* detrás de todo */
-      background:linear-gradient(180deg, rgba(12,18,26,.3), rgba(10,14,20,.6));
-    }
+    /* ============ Background layers ============ */
+    #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.6s var(--ease)}
+    #gl.on{opacity:1}
+    .aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(40% 35% at 15% 10%, rgba(91,140,255,.16), transparent 70%),
+        radial-gradient(35% 30% at 90% 30%, rgba(167,139,250,.10), transparent 70%),
+        radial-gradient(40% 40% at 50% 110%, rgba(124,243,255,.08), transparent 70%);
+      filter:blur(20px)}
+    .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    main,header,footer{position:relative;z-index:2}
 
-    /* ---------- Navbar ---------- */
-    .navbar{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter:saturate(1.2) blur(10px);
-      background:rgba(10,14,20,.55);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      transition:all .25s ease;
-    }
-    .navbar.shrink{padding:6px 0;background:rgba(10,14,20,.75)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
-    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 16px var(--primary)}
-    .nav-links{display:flex;gap:14px;flex-wrap:wrap}
-    .nav-links a{
-      padding:10px 14px;border-radius:12px;color:var(--text);border:1px solid transparent;
-    }
-    .nav-links a:hover{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+    /* ============ Intro (hiperespacio) ============ */
+    #intro{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;transition:opacity .9s var(--ease)}
+    #intro canvas{position:absolute;inset:0;width:100%;height:100%}
+    #intro .flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#fff 0%,#cfe6ff 35%,rgba(124,243,255,0) 75%);opacity:0;pointer-events:none}
+    #intro .intro-name{position:relative;text-align:center;opacity:0;transform:translateY(10px);transition:all 1s var(--ease)}
+    #intro .intro-name.show{opacity:1;transform:none}
+    #intro .intro-name b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,4vw,2.6rem);letter-spacing:-.02em}
+    #intro .intro-name span{color:var(--muted)}
+    #intro .skip{position:absolute;bottom:32px;right:32px;background:none;border:1px solid var(--line-2);color:var(--muted);padding:10px 18px;border-radius:99px;cursor:pointer;font:inherit;font-size:.85rem;transition:all .3s}
+    #intro .skip:hover{color:#fff;border-color:#fff}
+    #intro.done{opacity:0;pointer-events:none}
 
-    /* ---------- Sections ---------- */
-    section{padding:90px 0}
-    .hero{
-      padding:120px 0 90px 0;position:relative;isolation:isolate;
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:8px 12px;border:1px solid var(--border);border-radius:999px;
-      background:rgba(255,255,255,.04);
-      color:var(--muted);font-size:.9rem
-    }
-    .hero-grid{
-      display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;
-    }
-    @media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
-    .title{
-      font-size:clamp(36px,6vw,62px);
-      line-height:1.05;margin:16px 0 10px 0;font-weight:800;
-      letter-spacing:.2px;
-    }
-    .title span{background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .subtitle{color:var(--muted);font-size:clamp(16px,2.4vw,18px);text-align: justify;}
-    .cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
-    .btn{
-      padding:12px 16px;border-radius:14px;border:1px solid var(--border);
-      background:linear-gradient(180deg, #121b27, #0f1621);
-      color:var(--text);box-shadow:var(--shadow);font-weight:600
-    }
-    .btn.primary{
-      background:linear-gradient(90deg, var(--primary), #9ae6ff);
-      color:#07232b;border:none
-    }
-    .card{
-      background:linear-gradient(180deg,#101823,#0c121a);
-      border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)
-    }
+    /* ============ Nav ============ */
+    header{position:fixed;top:0;left:0;right:0;z-index:50;transition:all .5s var(--ease)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+    header.scrolled .nav{height:68px}
+    header.scrolled{background:rgba(5,6,10,.6);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
+    .logo{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
+    .logo i{width:9px;height:9px;border-radius:50%;background:var(--grad);box-shadow:0 0 16px var(--a2)}
+    .links{display:flex;gap:6px;list-style:none;align-items:center}
+    .links a{padding:9px 16px;border-radius:99px;font-size:.92rem;color:var(--muted);transition:color .3s,background .3s}
+    .links a:hover,.links a.active{color:var(--text);background:var(--surface-2)}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:99px;font-weight:500;font-size:.95rem;border:1px solid var(--line-2);transition:transform .4s var(--ease),background .3s,border-color .3s,box-shadow .4s;cursor:pointer;white-space:nowrap}
+    .btn svg{width:16px;height:16px;transition:transform .4s var(--ease)}
+    .btn:hover svg{transform:translate(3px,-3px)}
+    .btn-primary{background:var(--text);color:#05060a;border-color:var(--text)}
+    .btn-primary:hover{box-shadow:0 10px 40px -10px rgba(124,243,255,.6)}
+    .btn-ghost:hover{background:var(--surface-2);border-color:var(--text)}
+    .nav .btn{padding:10px 20px}
+    .burger{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-2);background:none;cursor:pointer;position:relative}
+    .burger span{position:absolute;left:13px;right:13px;height:1.5px;background:var(--text);transition:all .4s var(--ease)}
+    .burger span:nth-child(1){top:17px}.burger span:nth-child(2){top:25px}
+    .burger.open span:nth-child(1){top:21px;transform:rotate(45deg)}
+    .burger.open span:nth-child(2){top:21px;transform:rotate(-45deg)}
 
-    /* ---------- Skills ---------- */
-    .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:24px}
-    .section-head h2{margin:0;font-size:clamp(26px,3.6vw,34px)}
-    .skills{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
-    }
-    @media (max-width:700px){.skills{grid-template-columns:1fr 1fr}}
-    .skill{
-      display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:16px
-    }
-    .skill b{letter-spacing:.3px}
-    .meter{width:52%;height:10px;border-radius:999px;background:#0d141c;border:1px solid var(--border);overflow:hidden}
-    .meter > span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),#9ae6ff)}
+    /* ============ Hero ============ */
+    .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:140px 0 90px}
+    .hero-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:56px;align-items:center}
+    .status{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 12px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface);font-size:.85rem;color:var(--muted);backdrop-filter:blur(8px)}
+    .status i{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:ping 2s infinite}
+    @keyframes ping{70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+    .hero h1{font-family:var(--display);font-weight:600;font-size:clamp(2.5rem,5.2vw,4.5rem);line-height:1.02;letter-spacing:-.045em;margin:28px 0 26px}
+    .hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em;white-space:nowrap}
+    .hero h1 .line>span{display:inline-block;transform:translateY(110%);transition:transform 1.2s var(--ease)}
+    .ready .hero h1 .line>span{transform:none}
+    .ready .hero h1 .line:nth-child(2)>span{transition-delay:.08s}
+    .ready .hero h1 .line:nth-child(3)>span{transition-delay:.16s}
+    .hero p.lead{font-size:1.15rem;color:var(--muted);max-width:560px}
+    .hero p.lead b{color:var(--text);font-weight:500}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
+    .meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:56px;color:var(--muted);font-size:.9rem}
+    .meta div{display:flex;flex-direction:column;gap:2px}
+    .meta b{font-family:var(--display);color:var(--text);font-weight:500;font-size:1rem}
 
-    /* ---------- Projects ---------- */
-    .projects{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
-    }
-    @media (max-width:900px){.projects{grid-template-columns:1fr 1fr}}
-    @media (max-width:620px){.projects{grid-template-columns:1fr}}
-    .project{
-      padding:18px;border-radius:18px;display:flex;flex-direction:column;gap:12px
-    }
-    .project h3{margin:.2rem 0}
-    .tags{display:flex;gap:8px;flex-wrap:wrap}
-    .tag{
-      font-size:.75rem;color:var(--muted);
-      border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03)
-    }
+    .portrait{position:relative;aspect-ratio:4/5;border-radius:28px;isolation:isolate}
+    .portrait::before{content:"";position:absolute;inset:-1px;border-radius:29px;padding:1px;background:linear-gradient(160deg,rgba(255,255,255,.35),rgba(255,255,255,.02) 40%,rgba(124,243,255,.4));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2;pointer-events:none}
+    .portrait .ph{position:absolute;inset:0;border-radius:28px;overflow:hidden;background:#0b0e16}
+    .portrait img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 1.4s var(--ease)}
+    .portrait:hover img{transform:scale(1.08)}
+    .portrait .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,6,10,.85))}
+    .portrait .tag{position:absolute;left:22px;right:22px;bottom:20px;z-index:3;display:flex;justify-content:space-between;align-items:flex-end}
+    .portrait .tag b{font-family:var(--display);font-weight:600;font-size:1.15rem;display:block}
+    .portrait .tag span{color:var(--muted);font-size:.85rem}
+    .chip-float{position:absolute;z-index:4;padding:10px 16px;border-radius:14px;background:rgba(12,15,24,.72);border:1px solid var(--line-2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:.85rem;display:flex;gap:8px;align-items:center;box-shadow:0 20px 40px -20px rgba(0,0,0,.8);animation:float 6s ease-in-out infinite}
+    .chip-float i{width:7px;height:7px;border-radius:50%;background:var(--a2)}
+    .chip-float.c1{top:9%;left:-14%}
+    .chip-float.c2{top:42%;right:-12%;animation-delay:-2s}
+    .chip-float.c3{bottom:20%;left:-10%;animation-delay:-4s}
+    @keyframes float{50%{transform:translateY(-10px)}}
+    .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--dim)}
+    .scroll-hint span{width:1px;height:46px;background:linear-gradient(var(--a2),transparent);animation:drop 2.2s var(--ease) infinite;transform-origin:top}
+    @keyframes drop{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 
-    /* ---------- Contact ---------- */
-    .contact{
-      display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center
+    /* ============ Marquee ============ */
+    .marquee{border-block:1px solid var(--line);padding:26px 0;overflow:hidden;position:relative;z-index:2;background:rgba(5,6,10,.4)}
+    .marquee-track{display:flex;gap:56px;width:max-content;animation:marq 40s linear infinite}
+    .marquee span{font-family:var(--display);font-size:1.5rem;font-weight:500;color:var(--dim);display:flex;align-items:center;gap:56px;white-space:nowrap}
+    .marquee span::after{content:"✦";font-size:.9rem;color:var(--a1)}
+    @keyframes marq{to{transform:translateX(-50%)}}
+
+    /* ============ Section heads ============ */
+    .head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:72px;flex-wrap:wrap}
+    .eyebrow{color:var(--a2);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+    .eyebrow::before{content:"";width:28px;height:1px;background:var(--a2)}
+    h2{font-family:var(--display);font-weight:600;font-size:clamp(2.1rem,4.6vw,3.8rem);line-height:1.05;letter-spacing:-.04em;max-width:780px}
+    .head p{color:var(--muted);max-width:380px}
+
+    /* ============ Reveal ============ */
+    .rv{opacity:0;transform:translateY(40px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
+    .rv.in{opacity:1;transform:none}
+    .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+    /* ============ About ============ */
+    .statement{font-family:var(--display);font-weight:500;font-size:clamp(1.6rem,3.3vw,2.75rem);line-height:1.25;letter-spacing:-.03em;max-width:1050px}
+    .statement .w{color:var(--dim);transition:color .4s}
+    .statement .w.lit{color:var(--text)}
+    .statement .w.hl.lit{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:90px}
+    .card{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:34px;overflow:hidden;transition:border-color .4s,transform .6s var(--ease);backdrop-filter:blur(6px)}
+    .card::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(124,243,255,.09),transparent 45%);opacity:0;transition:opacity .4s;pointer-events:none}
+    .card:hover{border-color:var(--line-2)}
+    .card:hover::before{opacity:1}
+    .card .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);margin-bottom:26px}
+    .card .ico svg{width:22px;height:22px;stroke:var(--a2)}
+    .card h3{font-family:var(--display);font-weight:600;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:10px}
+    .card p{color:var(--muted);font-size:.95rem}
+
+    /* ============ Projects ============ */
+    .projects{display:flex;flex-direction:column;gap:28px}
+    .project{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:rgba(9,11,18,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:relative;transition:border-color .5s}
+    .project:hover{border-color:var(--line-2)}
+    .project:nth-child(even) .visual{order:2}
+    .project .info{padding:52px;display:flex;flex-direction:column}
+    .project .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px;color:var(--dim)}
+    .pill{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted)}
+    .pill.live{color:#34d399;border-color:rgba(52,211,153,.35)}
+    .pill.dev{color:#fbbf24;border-color:rgba(251,191,36,.35)}
+    .project h3{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,2.6vw,2.2rem);letter-spacing:-.035em;line-height:1.1;margin-bottom:8px}
+    .project .role{color:var(--a2);font-size:.9rem;margin-bottom:20px}
+    .project p{color:var(--muted)}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+    .tags span{font-size:.8rem;padding:6px 12px;border-radius:99px;background:var(--surface-2);color:#c8cfdc}
+    .project .actions{margin-top:auto;padding-top:34px;display:flex;gap:12px;flex-wrap:wrap}
+    .project .actions .btn{padding:11px 20px;font-size:.88rem}
+    .visual{position:relative;min-height:440px;overflow:hidden;display:grid;place-items:center;background:var(--vbg,#0b0e18)}
+    .visual::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 40%,var(--glow,rgba(91,140,255,.35)),transparent 70%);transition:transform 1.2s var(--ease)}
+    .visual::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(70% 70% at 50% 50%,#000,transparent);-webkit-mask-image:radial-gradient(70% 70% at 50% 50%,#000,transparent);opacity:.5}
+    .project:hover .visual::before{transform:scale(1.15)}
+
+    /* phone mockup */
+    .phone{position:relative;z-index:2;width:210px;height:430px;border-radius:38px;background:#0a0c12;border:1px solid rgba(255,255,255,.18);box-shadow:0 40px 80px -30px rgba(0,0,0,.9),inset 0 0 0 7px #111521;padding:14px;transform:rotate(-6deg) translateY(30px);transition:transform 1s var(--ease)}
+    .project:hover .phone{transform:rotate(-3deg) translateY(16px)}
+    .phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:62px;height:18px;border-radius:99px;background:#000;z-index:3}
+    .screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:var(--sbg,#0f1320);padding:44px 14px 14px;display:flex;flex-direction:column;gap:10px}
+    .s-title{height:12px;width:60%;border-radius:6px;background:rgba(255,255,255,.75)}
+    .s-sub{height:8px;width:40%;border-radius:6px;background:rgba(255,255,255,.25)}
+    .s-hero{height:110px;border-radius:16px;background:var(--acc,linear-gradient(135deg,#5b8cff,#7cf3ff));position:relative;overflow:hidden}
+    .s-hero::after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.18);right:-30px;top:-40px}
+    .s-row{display:flex;gap:8px;align-items:center;padding:9px;border-radius:12px;background:rgba(255,255,255,.05)}
+    .s-row i{width:26px;height:26px;border-radius:8px;background:var(--dot,#7cf3ff);opacity:.85;flex:none}
+    .s-row b{display:block;height:7px;width:70%;border-radius:4px;background:rgba(255,255,255,.4)}
+    .s-row u{display:block;height:6px;width:45%;border-radius:4px;background:rgba(255,255,255,.15);margin-top:5px}
+    .s-bars{display:flex;align-items:flex-end;gap:6px;height:70px;padding:8px;border-radius:12px;background:rgba(255,255,255,.04)}
+    .s-bars span{flex:1;border-radius:4px;background:var(--dot,#7cf3ff);opacity:.8}
+    .s-wave{display:flex;align-items:center;justify-content:center;gap:4px;height:64px;border-radius:14px;background:rgba(255,255,255,.05)}
+    .s-wave span{width:4px;border-radius:2px;background:var(--dot);animation:wv 1.2s ease-in-out infinite}
+    @keyframes wv{50%{transform:scaleY(.35)}}
+
+    /* desktop mockup */
+    .desk{position:relative;z-index:2;width:82%;max-width:470px;aspect-ratio:16/10.5;border-radius:16px;background:#0b0e16;border:1px solid rgba(255,255,255,.16);box-shadow:0 40px 80px -30px rgba(0,0,0,.9);overflow:hidden;transform:perspective(1200px) rotateY(-10deg) rotateX(4deg);transition:transform 1s var(--ease)}
+    .project:hover .desk{transform:perspective(1200px) rotateY(-4deg) rotateX(2deg)}
+    .desk .bar{height:28px;display:flex;gap:6px;align-items:center;padding:0 12px;border-bottom:1px solid var(--line)}
+    .desk .bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}
+    .desk .body{display:grid;grid-template-columns:72px 1fr;height:calc(100% - 28px)}
+    .desk .side{border-right:1px solid var(--line);padding:12px 10px;display:flex;flex-direction:column;gap:8px}
+    .desk .side b{height:8px;border-radius:4px;background:rgba(255,255,255,.15)}
+    .desk .side b:first-child{background:var(--dot);opacity:.8}
+    .desk .main{padding:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:min-content;gap:10px}
+    .desk .kpi{height:52px;border-radius:10px;background:rgba(255,255,255,.05);padding:9px}
+    .desk .kpi b{display:block;height:7px;width:50%;border-radius:4px;background:rgba(255,255,255,.25)}
+    .desk .kpi u{display:block;height:12px;width:70%;border-radius:4px;background:rgba(255,255,255,.7);margin-top:8px}
+    .desk .tbl{grid-column:1/-1;border-radius:10px;background:rgba(255,255,255,.04);padding:10px;display:flex;flex-direction:column;gap:8px}
+    .desk .tbl span{height:9px;border-radius:4px;background:rgba(255,255,255,.1)}
+    .desk .tbl span:nth-child(odd){width:85%}
+    .desk.store .main{grid-template-columns:repeat(4,1fr)}
+    .desk .prod{aspect-ratio:3/4;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.02));position:relative}
+    .desk .prod::after{content:"";position:absolute;left:30%;right:30%;top:22%;bottom:30%;border-radius:8px 8px 4px 4px;background:var(--dot);opacity:.7}
+    .desk .banner{grid-column:1/-1;height:70px;border-radius:10px;background:var(--acc);display:flex;align-items:center;padding:0 16px}
+    .desk .banner b{height:12px;width:40%;border-radius:6px;background:rgba(255,255,255,.85)}
+
+    /* archive */
+    .archive{margin-top:110px}
+    .archive h3{font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:26px}
+    .rows{border-top:1px solid var(--line)}
+    .row{display:grid;grid-template-columns:1.1fr 1.6fr 1fr 40px;gap:24px;align-items:center;padding:22px 6px;border-bottom:1px solid var(--line);transition:background .3s,padding .5s var(--ease)}
+    .row:hover{background:var(--surface);padding-left:18px}
+    .row b{font-family:var(--display);font-weight:500;font-size:1.05rem}
+    .row p{color:var(--muted);font-size:.92rem}
+    .row .stk{color:var(--dim);font-family:var(--mono);font-size:.74rem;letter-spacing:.04em}
+    .row svg{width:18px;height:18px;stroke:var(--muted);transition:transform .4s var(--ease),stroke .3s}
+    .row:hover svg{transform:translate(3px,-3px);stroke:var(--a2)}
+
+    /* ============ IA ============ */
+    .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+    .bento .card{min-height:250px;display:flex;flex-direction:column}
+    .bento .card .mono{color:var(--dim);margin-bottom:auto;padding-bottom:30px}
+    .b1{grid-column:span 4}.b2{grid-column:span 2}.b3{grid-column:span 2}.b4{grid-column:span 2}.b5{grid-column:span 2}
+    .b1{background:linear-gradient(140deg,rgba(91,140,255,.14),rgba(167,139,250,.06) 60%,rgba(255,255,255,.02))}
+    .b1 h3{font-size:1.7rem}
+    .flow{display:flex;align-items:center;gap:10px;margin-top:26px;flex-wrap:wrap}
+    .flow span{padding:8px 14px;border-radius:12px;border:1px solid var(--line-2);font-size:.82rem;background:rgba(5,6,10,.5)}
+    .flow em{color:var(--a2);font-style:normal}
+
+    /* ============ Experience ============ */
+    .timeline{position:relative}
+    .titem{display:grid;grid-template-columns:240px 1fr;gap:48px;padding:44px 0;border-top:1px solid var(--line);position:relative}
+    .titem:last-child{border-bottom:1px solid var(--line)}
+    .titem .when{color:var(--muted);font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;padding-top:6px}
+    .titem .when b{display:block;color:var(--text);font-family:var(--display);font-size:1.05rem;letter-spacing:-.01em;font-weight:500;margin-bottom:4px}
+    .titem h3{font-family:var(--display);font-weight:600;font-size:1.6rem;letter-spacing:-.03em;margin-bottom:4px}
+    .titem .org{color:var(--a2);margin-bottom:14px}
+    .titem p{color:var(--muted);max-width:720px}
+
+    /* ============ Stack ============ */
+    .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .stack .card h3{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+    .stack .card h3 span{font-family:var(--mono);font-size:.7rem;color:var(--dim);font-weight:400}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chips span{padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.025);font-size:.88rem;transition:all .3s}
+    .chips span:hover{border-color:var(--a2);color:#fff;transform:translateY(-2px)}
+
+    /* ============ Contact ============ */
+    .contact{text-align:center;padding:180px 0 140px}
+    .contact h2{margin:0 auto;font-size:clamp(2.6rem,7.5vw,6.4rem);max-width:none;line-height:.98}
+    .contact p{color:var(--muted);max-width:560px;margin:30px auto 0;font-size:1.1rem}
+    .mail{display:inline-flex;align-items:center;gap:16px;margin-top:52px;font-family:var(--display);font-size:clamp(1rem,2.4vw,1.6rem);font-weight:500;padding:20px 34px;border-radius:99px;border:1px solid var(--line-2);background:var(--surface);transition:all .5s var(--ease);cursor:pointer;color:var(--text)}
+    .mail:hover{border-color:var(--a2);box-shadow:0 0 60px -10px rgba(124,243,255,.35)}
+    .mail small{font-family:var(--mono);font-size:.68rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+    .socials{display:flex;justify-content:center;gap:12px;margin-top:30px;flex-wrap:wrap}
+    .socials a{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:99px;border:1px solid var(--line);color:var(--muted);transition:all .3s;font-size:.92rem}
+    .socials a:hover{color:var(--text);border-color:var(--line-2);background:var(--surface-2)}
+    .socials svg{width:17px;height:17px}
+
+    footer{border-top:1px solid var(--line);padding:30px 0;color:var(--dim);font-size:.85rem}
+    footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,30px);opacity:0;z-index:90;padding:12px 20px;border-radius:99px;background:#fff;color:#05060a;font-size:.9rem;font-weight:500;transition:all .5s var(--ease);pointer-events:none}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    /* ============ Responsive ============ */
+    @media (max-width:1024px){
+      .hero-grid{grid-template-columns:1fr;gap:60px}
+      .portrait{max-width:420px;width:100%;margin:0 auto}
+      .project{grid-template-columns:1fr}
+      .project:nth-child(even) .visual{order:0}
+      .visual{min-height:360px}
+      .pillars,.stack{grid-template-columns:1fr 1fr}
+      .b1,.b2,.b3,.b4,.b5{grid-column:span 3}
+      .b1{grid-column:1/-1}
     }
-    @media (max-width:900px){.contact{grid-template-columns:1fr}}
-    .contact .card{padding:22px}
-    .contact .note{color:var(--muted)}
-
-    /* ---------- Footer ---------- */
-    footer{padding:36px 0;color:var(--muted);border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
-    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-
-    /* ---------- Reveal Animation ---------- */
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
-    .reveal.visible{opacity:1;transform:none}
+    @media (max-width:760px){
+      section{padding:100px 0}
+      .container{padding:0 20px}
+      .links,.nav>.btn{display:none}
+      .burger{display:block}
+      .links.open{display:flex;position:fixed;inset:68px 0 auto 0;flex-direction:column;align-items:stretch;padding:16px 20px 28px;background:rgba(5,6,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+      .links.open a{font-size:1.2rem;padding:14px 10px;border-radius:12px}
+      .hero{padding-top:120px}
+      .chip-float.c1{left:-4%}.chip-float.c2{right:-4%}.chip-float.c3{left:-2%}
+      .pillars,.stack{grid-template-columns:1fr}
+      .bento{grid-template-columns:1fr}
+      .b1,.b2,.b3,.b4,.b5{grid-column:auto}
+      .project .info{padding:32px 26px}
+      .visual{min-height:300px}
+      .phone{width:170px;height:350px;border-radius:32px}
+      .row{grid-template-columns:1fr 24px;gap:6px 14px}
+      .row p,.row .stk{grid-column:1}
+      .row svg{grid-row:1;grid-column:2}
+      .titem{grid-template-columns:1fr;gap:12px}
+      .head{margin-bottom:48px}
+      .scroll-hint{display:none}
+      .hero h1 .line{white-space:normal}
+      #gl.on{opacity:.45}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+      .rv{opacity:1;transform:none}
+      .hero h1 .line>span{transform:none}
+    }
   </style>
+
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    } }
+  </script>
 </head>
-<body>
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
 
-  <!-- ---------- NAV ---------- -->
-  <nav class="navbar">
-    <div class="container nav-inner">
-      <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <span>Eduardo Elias</span>
+<body class="locked">
+  <!-- ====== Intro: salto al hiperespacio ====== -->
+  <div id="intro" aria-hidden="true">
+    <canvas id="warp"></canvas>
+    <div class="flash"></div>
+    <div class="intro-name"><b>Eduardo Castellanos</b><span class="mono">Software · Apps móviles · IA</span></div>
+    <button class="skip" type="button">Saltar intro</button>
+  </div>
+
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ====== Nav ====== -->
+  <header id="top">
+    <nav class="container nav" aria-label="Principal">
+      <a href="#inicio" class="logo"><i></i>Eduardo C.</a>
+      <ul class="links" id="links">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#ia">IA</a></li>
+        <li><a href="#experiencia">Experiencia</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="btn btn-primary">Hablemos</a>
+      <button class="burger" id="burger" aria-label="Abrir menú"><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ====== Hero ====== -->
+    <section class="hero" id="inicio" data-scene="0">
+      <div class="container hero-grid">
+        <div>
+          <span class="status"><i></i>Disponible · Remoto, híbrido o presencial</span>
+          <h1>
+            <span class="line"><span>Construyo apps</span></span>
+            <span class="line"><span>y software que se</span></span>
+            <span class="line"><span class="grad">sienten premium.</span></span>
+          </h1>
+          <p class="lead">Soy <b>Eduardo Castellanos</b>, desarrollador de software en Colombia. Llevo productos de la idea a la tienda de apps con <b>Flutter, Firebase, Google Cloud y .NET</b>, y les sumo <b>IA aplicada</b> cuando aporta valor real.</p>
+          <div class="cta">
+            <a href="#proyectos" class="btn btn-primary">Ver proyectos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a href="assets/Hoja_de_Vida_Eduardo_Castellanos.pdf" class="btn btn-ghost" download>Descargar CV
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg></a>
+          </div>
+          <div class="meta">
+            <div><b>Bucaramanga</b>Colombia</div>
+            <div><b>Móvil + Backend</b>Android · iOS · Web</div>
+            <div><b>IA aplicada</b>Agentes · Automatización</div>
+          </div>
+        </div>
+
+        <div class="portrait rv">
+          <div class="ph"><img src="assets/eduardo.jpg" alt="Eduardo Castellanos" width="880" height="1100" /></div>
+          <div class="chip-float c1"><i></i>Flutter · Dart</div>
+          <div class="chip-float c2"><i style="background:#fbbf24"></i>Firebase · GCP</div>
+          <div class="chip-float c3"><i style="background:#a78bfa"></i>IA local</div>
+          <div class="tag"><div><b>Eduardo Castellanos</b><span>Desarrollador de software</span></div><span class="mono">2026</span></div>
+        </div>
       </div>
-      <div class="nav-links" role="navigation" aria-label="Primary">
-        <a href="#home">Home</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+      <div class="scroll-hint mono"><span></span></div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Flutter</span><span>Firebase</span><span>Google Cloud</span><span>Supabase</span><span>.NET</span><span>Blazor</span><span>PostgreSQL</span><span>JavaScript</span><span>Python</span><span>n8n</span><span>IA generativa</span>
+        <span>Flutter</span><span>Firebase</span><span>Google Cloud</span><span>Supabase</span><span>.NET</span><span>Blazor</span><span>PostgreSQL</span><span>JavaScript</span><span>Python</span><span>n8n</span><span>IA generativa</span>
       </div>
     </div>
-  </nav>
 
-  <!-- ---------- HERO ---------- -->
-  <section class="hero" id="home">
-    <div class="container hero-grid">
-      <div>
-        <span class="pill"> <div></div> 🚀 Desarrollador Junior |  Data <div></div></span>
-        <h1 class="title">
-          Hola, Yo soy <span>Eduardo Elias Castellanos Picon</span>
-        </h1>
-        <p class="subtitle">
-“Creo aplicaciones web robustas y de alto rendimiento, aplicando buenas prácticas y tecnologías que garantizan calidad, escalabilidad y una experiencia impecable.”          <!-- TODO: Puedes personalizar este texto de presentación -->
-        </p>
-        <div class="cta">
-          <a class="btn primary" href="#projects">View Projects</a>
-          <a class="btn" href="#contact">Contact Me</a>
+    <!-- ====== Sobre mí ====== -->
+    <section id="sobre-mi" data-scene="1">
+      <div class="container">
+        <div class="eyebrow mono rv">Sobre mí</div>
+        <p class="statement" id="statement">Diseño y construyo <em>productos completos</em>: la app que la gente usa, el backend que la sostiene y la automatización que ahorra horas. Pienso como ingeniero, <em>entiendo el negocio</em> antes del código y me adapto rápido a cualquier tecnología.</p>
+
+        <div class="pillars">
+          <div class="card rv">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+            <h3>Móvil de punta a punta</h3>
+            <p>Apps Android e iOS en Flutter: interfaz, autenticación, datos en la nube, almacenamiento y publicación en Google Play con CI/CD.</p>
+          </div>
+          <div class="card rv d1">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+            <h3>Backend y nube</h3>
+            <p>Firebase, Google Cloud y Supabase; APIs REST y sistemas en .NET con bases de datos PostgreSQL, MySQL y locales con respaldo.</p>
+          </div>
+          <div class="card rv d2">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M6 6l2 2m8 8 2 2M6 18l2-2m8-8 2-2"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <h3>IA aplicada</h3>
+            <p>Agentes y chatbots, IA que corre en el dispositivo, automatizaciones con n8n y generación de imagen y video. Además, fui docente de IA.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card" style="padding:22px">
-        <h3 style="margin-top:0">A cerca de mi</h3>
-        <p class="subtitle">
-Desarrollador de software enfocado en la creación de soluciones tecnológicas que resuelven problemas reales del día a día. Me caracterizo por un pensamiento analítico sólido y una visión integral de los procesos, lo que me permite comprender las necesidades más allá del código y proponer soluciones eficientes, funcionales y orientadas a la calidad. Cuento con la capacidad de adaptarme rápidamente a nuevas tecnologías y de integrar análisis de datos y lógica de negocio para aportar valor en cada proyecto.
-        </p>
-        <ul style="margin:0;padding-left:18px;color:var(--muted)">
-          <li>Ubicado en Colombia</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ---------- SKILLS ---------- -->
-  <section id="skills" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <h2>Skills</h2>
-        <span class="pill">Core Stack</span>
-      </div>
-
-      <div class="skills">
-        <div class="skill card">
-          <b>HTML</b>
-          <div class="meter" aria-label="HTML level"><span style="width: 90%"></span></div>
+    <!-- ====== Proyectos ====== -->
+    <section id="proyectos" data-scene="2">
+      <div class="container">
+        <div class="head">
+          <div>
+            <div class="eyebrow mono rv">Proyectos seleccionados</div>
+            <h2 class="rv d1">Productos reales, <span class="grad">no solo ejercicios.</span></h2>
+          </div>
+          <p class="rv d2">Apps propias, software listo para vender y sitios para clientes. Lo más reciente primero.</p>
         </div>
-        <div class="skill card">
-          <b>CSS</b>
-          <div class="meter" aria-label="CSS level"><span style="width: 85%"></span></div>
+
+        <div class="projects">
+          <!-- 01 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(251,191,36,.30);--vbg:#0d0b07">
+              <div class="phone"><div class="screen" style="--sbg:#0b0b0b;--acc:linear-gradient(135deg,#f5c542,#b8860b);--dot:#f5c542">
+                <div class="s-title"></div><div class="s-sub"></div>
+                <div class="s-hero"></div>
+                <div class="s-row"><i></i><div style="flex:1"><b></b><u></u></div></div>
+                <div class="s-row"><i style="opacity:.6"></i><div style="flex:1"><b></b><u></u></div></div>
+                <div class="s-row"><i style="opacity:.4"></i><div style="flex:1"><b></b><u></u></div></div>
+              </div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">01 — App móvil</span><span class="pill dev">Versión 1 en cierre</span></div>
+              <h3>Marketplace de entretenimiento</h3>
+              <div class="role">Fundador · Desarrollo full-stack</div>
+              <p>App tipo Uber/Airbnb para contratar música en vivo, DJs, sonido y proveedores de eventos en Colombia. Construida de principio a fin: app en Flutter, backend en la nube con reglas de seguridad por fila y despliegue automatizado hacia Google Play.</p>
+              <div class="tags"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>PostgreSQL · RLS</span><span>Storage</span><span>Codemagic CI/CD</span></div>
+            </div>
+          </article>
+
+          <!-- 02 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(52,211,153,.28);--vbg:#06100d">
+              <div class="phone"><div class="screen" style="--sbg:#07120f;--acc:linear-gradient(135deg,#34d399,#0ea5e9);--dot:#34d399">
+                <div class="s-title"></div><div class="s-sub"></div>
+                <div class="s-wave"><span style="height:20px"></span><span style="height:38px;animation-delay:-.2s"></span><span style="height:28px;animation-delay:-.4s"></span><span style="height:46px;animation-delay:-.6s"></span><span style="height:24px;animation-delay:-.8s"></span><span style="height:36px;animation-delay:-1s"></span><span style="height:18px;animation-delay:-.3s"></span><span style="height:30px;animation-delay:-.5s"></span></div>
+                <div class="s-row"><i></i><div style="flex:1"><b></b><u></u></div></div>
+                <div class="s-row"><i style="opacity:.6"></i><div style="flex:1"><b></b><u></u></div></div>
+                <div class="s-hero" style="height:70px"></div>
+              </div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">02 — Salud + IA</span><span class="pill dev">En desarrollo</span></div>
+              <h3>Asistente clínico con IA sin internet</h3>
+              <div class="role">Idea, arquitectura y desarrollo</div>
+              <p>App para médicos en zonas rurales: convierte la conversación de la consulta en una historia clínica que el médico revisa, corrige y aprueba. La IA corre en el dispositivo, sin conexión, y todo se sincroniza cuando vuelve el internet. En camino: traducción a lenguas indígenas e integración con EPS y hospitales.</p>
+              <div class="tags"><span>Android · iOS</span><span>IA local</span><span>Voz a texto</span><span>Supabase</span><span>.NET</span><span>Offline-first</span></div>
+            </div>
+          </article>
+
+          <!-- 03 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(91,140,255,.35);--vbg:#070a14">
+              <div class="phone"><div class="screen" style="--sbg:#0a0f1f;--acc:linear-gradient(135deg,#5b8cff,#a78bfa);--dot:#7c9cff">
+                <div class="s-title"></div><div class="s-sub"></div>
+                <div class="s-hero"></div>
+                <div class="s-bars"><span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:90%"></span><span style="height:65%"></span><span style="height:80%"></span></div>
+                <div class="s-row"><i></i><div style="flex:1"><b></b><u></u></div></div>
+              </div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">03 — Fintech</span><span class="pill">Proyecto en equipo</span></div>
+              <h3>DuoCash</h3>
+              <div class="role">Líder de desarrollo móvil</div>
+              <p>App de finanzas personales hecha en Flutter. Lideré el desarrollo de la aplicación móvil dentro del equipo del proyecto.</p>
+              <div class="tags"><span>Flutter</span><span>Dart</span><span>Liderazgo técnico</span></div>
+            </div>
+          </article>
+
+          <!-- 04 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(124,243,255,.25);--vbg:#061013">
+              <div class="desk"><div class="bar"><i></i><i></i><i></i></div><div class="body" style="--dot:#7cf3ff">
+                <div class="side"><b></b><b></b><b></b><b></b><b></b></div>
+                <div class="main"><div class="kpi"><b></b><u></u></div><div class="kpi"><b></b><u></u></div><div class="kpi"><b></b><u></u></div>
+                  <div class="tbl"><span></span><span></span><span></span><span></span><span></span></div></div>
+              </div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">04 — Software de escritorio</span><span class="pill live">Listo para vender</span></div>
+              <h3>Elite POS — inventario y ventas</h3>
+              <div class="role">Producto propio · Voz &amp; Código</div>
+              <p>Sistema de inventario y punto de venta para droguerías, tiendas y otros negocios. Funciona con base de datos local y copias de seguridad, impuestos configurables por el usuario y licencia con prueba de 15 días que se activa sin internet.</p>
+              <div class="tags"><span>C#</span><span>.NET</span><span>Base de datos local</span><span>Backups</span><span>Licenciamiento offline</span></div>
+            </div>
+          </article>
+
+          <!-- 05 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(212,175,122,.28);--vbg:#100c08">
+              <div class="desk store"><div class="bar"><i></i><i></i><i></i></div><div style="--dot:#d4af7a;--acc:linear-gradient(120deg,#2a1f14,#8a6a3f)">
+                <div class="main" style="padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+                  <div class="banner"><b></b></div>
+                  <div class="prod"></div><div class="prod"></div><div class="prod"></div><div class="prod"></div>
+                </div></div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">05 — E-commerce</span><span class="pill live">Cliente real</span></div>
+              <h3>Luxume Perfumería</h3>
+              <div class="role">Diseño y desarrollo web</div>
+              <p>Tienda en línea premium para una perfumería de Bucaramanga con envíos a todo el país. El cliente actualiza el catálogo desde Google Sheets y las fotos desde Drive, sin tocar código, y las compras se cierran por WhatsApp.</p>
+              <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Google Sheets como CMS</span><span>WhatsApp</span></div>
+              <div class="actions">
+                <a class="btn btn-ghost" href="https://luxumeperfumeria.com" target="_blank" rel="noopener">Ver tienda
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 06 -->
+          <article class="project rv">
+            <div class="visual" style="--glow:rgba(167,139,250,.32);--vbg:#0c0914">
+              <div class="desk"><div class="bar"><i></i><i></i><i></i></div><div style="--dot:#a78bfa;--acc:linear-gradient(120deg,#a78bfa,#5b8cff)">
+                <div class="main" style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                  <div class="banner" style="height:90px"><b></b></div>
+                  <div class="kpi"><b></b><u></u></div><div class="kpi"><b></b><u></u></div><div class="kpi"><b></b><u></u></div>
+                </div></div></div>
+            </div>
+            <div class="info">
+              <div class="top"><span class="mono">06 — Empresa</span><span class="pill live">En línea</span></div>
+              <h3>Voz &amp; Código</h3>
+              <div class="role">Cofundador · Software y marketing</div>
+              <p>Mi estudio de software y marketing digital: páginas web, campañas, agentes con IA y automatizaciones para negocios locales. Yo construí el sitio y los productos de software.</p>
+              <div class="tags"><span>Web</span><span>Agentes IA</span><span>Automatización</span><span>Netlify</span></div>
+              <div class="actions">
+                <a class="btn btn-ghost" href="https://vozcodigo.netlify.app" target="_blank" rel="noopener">Ver sitio
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+              </div>
+            </div>
+          </article>
         </div>
-        <div class="skill card">
-          <b>JavaScript</b>
-          <div class="meter" aria-label="JS level"><span style="width: 80%"></span></div>
-        </div>
-      </div>
 
-      <div style="margin-top:22px" class="reveal">
-        <div class="section-head">
-          <h2>Skills</h2>
-          <span class="pill">+ Extras</span>
-        </div>
-        <div class="skills">
-          <div class="skill card"><b>C# / .NET</b><div class="meter"><span style="width:78%"></span></div></div>
-          <div class="skill card"><b>EF Core</b><div class="meter"><span style="width:76%"></span></div></div>
-          <div class="skill card"><b>MySQL</b><div class="meter"><span style="width:74%"></span></div></div>
-          <div class="skill card"><b>Postgres</b><div class="meter"><span style="width:74%"></span></div></div>
-          <div class="skill card"><b>JavaScript/b><div class="meter"><span style="width:74%"></span></div></div>
-          <div class="skill card"><b>EntityFrameCore</b><div class="meter"><span style="width:74%"></span></div></div>
-
-
-        </div>
-      </div>
-
-      <div style="margin-top:22px" class="reveal">
-        <div class="section-head">
-          <h2>Skills</h2>
-          <span class="pill">+ Extras</span>
-        </div>
-        <div class="skills">
-          <div class="skill card"><b>Python</b><div class="meter"><span style="width:85%"></span></div></div>
-          <div class="skill card"><b>AWS</b><div class="meter"><span style="width:30%"></span></div></div>
-        <div class="skill card"><b>Analisis de datos</b><div class="meter"><span style="width:80%"></span></div></div>
-
-        </div>
-      </div>
-
-
-
-    </div>
-  </section>
-
-  <!-- ---------- PROJECTS ---------- -->
-  <section id="projects" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <h2>Projects</h2>
-        <span class="pill">Selected Work</span>
-      </div>
-
-      <div class="projects">
-        <!-- Proyecto 1 -->
-        <article class="project card">
-          <h3>Online Sales Data Analysis</h3>
-          <p class="subtitle">“Este repositorio contiene un análisis integral de datos de ventas en línea, con el objetivo de identificar patrones de compra, tendencias del mercado y oportunidades de optimización".</p>
-          <div class="tags">
-            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Ciencia de datos</span>
+        <div class="archive">
+          <h3 class="rv">Más proyectos</h3>
+          <div class="rows">
+            <a class="row rv" href="https://github.com/EduardoCastellanosP" target="_blank" rel="noopener"><b>Código Aventura</b><p>Juego web para aprender a programar, desplegado en Netlify.</p><span class="stk">JavaScript · Netlify</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/ICFES-Analysis-ML.git" target="_blank" rel="noopener"><b>Análisis ICFES con ML</b><p>Predicción de resultados Saber a partir de datos 2017–2023.</p><span class="stk">Python · Pandas · MongoDB</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/Online-Sales-Data-Analysis.git" target="_blank" rel="noopener"><b>Análisis de ventas online</b><p>Patrones de compra, tendencias y oportunidades de optimización.</p><span class="stk">Python · Pandas · Data Science</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/POKEMON-ARENA.git" target="_blank" rel="noopener"><b>Pokémon Arena</b><p>Arena de batallas por turnos contra otros entrenadores o la CPU.</p><span class="stk">JavaScript · Web Components</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/TIME_BOX.git" target="_blank" rel="noopener"><b>Time Box</b><p>Gestor de tareas con calendario, login y notificaciones por WhatsApp.</p><span class="stk">Python · JSON</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/LigaBetPlay_C-.git" target="_blank" rel="noopener"><b>Liga BetPlay</b><p>Gestión de equipos, jugadores, estadísticas y torneos.</p><span class="stk">C# · .NET 9 · EF Core · MySQL</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://github.com/EduardoCastellanosP/campuslove-Juliana-Eduardo.git" target="_blank" rel="noopener"><b>Campus Love</b><p>Simulador de emparejamiento con perfiles, likes y matches.</p><span class="stk">C# · EF Core · Arquitectura hexagonal</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="row rv" href="https://burgermenu-exam.netlify.app/" target="_blank" rel="noopener"><b>Burger Menu</b><p>Menú digital para restaurante, simple y atractivo.</p><span class="stk">HTML · CSS</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
           </div>
-          <!-- TODO: cambia # por tu repo/demo -->
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/Online-Sales-Data-Analysis.git" target="_blank" rel="noopener">Repository</a>
-            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
-          </div>
-        </article>
-
-        <!-- Proyecto 2 -->
-        <article class="project card">
-          <h3>Analisis de Icfes en Colombia</h3>
-          <p class="subtitle">
-
-          El objetivo principal de este proyecto es utilizar datos históricos de las pruebas SABER ICFES desde el año 2017 hasta el 2023 para predecir los resultados futuros.</p>
-          <div class="tags">
-            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">MongDB</span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/ICFES-Analysis-ML.git" target="_blank" rel="noopener">Repository</a>
-          </div>
-        </article>
-
-        <!-- Proyecto 3 -->
-        <article class="project card">
-          <h3>Pokemon Arena</h3>
-          <p class="subtitle">Una página web de arena de combates por turnos basada en el universo Pokémon. En esta arena, los entrenadores pueden enfrentarse entre sí o contra la CPU, eligiendo entre Pokémon de la primera y séptima generación.</p>
-          <div class="tags">
-            <span class="tag">JavaScript</span> <span class="tag">Html</span></span><span class="tag">Web Components</span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/POKEMON-ARENA.git" target="_blank" rel="noopener">Repository</a>
-            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
-          </div>
-        </article>
-
-
-        <article class="project card">
-          <h3>Time Box</h3>
-          <p class="subtitle">“TimeBox es una aplicación de gestión de tareas intuitiva y eficiente que te ayuda a organizar tus actividades dentro de una interfaz visual de calendario. Incluye autenticación de usuarios, notificaciones por WhatsApp, historial de tareas y personalización de temas.” </p>
-          <div class="tags">
-            <span class="tag">Python</span> <span class="tag">Json</span></span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/TIME_BOX.git" target="_blank" rel="noopener">Repository</a>
-            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
-          </div>
-        </article>
-
-
-        <article class="project card">
-          <h3>Campus Love</h3>
-          <p class="subtitle">“Campus Love es una aplicación de consola desarrollada en C# que simula un sistema de emparejamiento entre personas, permitiendo el registro de usuarios, visualización de perfiles, interacción mediante ‘likes’ y la generación de coincidencias (matches).” </p>
-          <div class="tags">
-            <span class="tag">C#</span> <span class="tag">MySQL</span><span class="tag"> EF Core</span><span class="tag">Arq Hexagonal</span></span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/campuslove-Juliana-Eduardo.git" target="_blank" rel="noopener">Repository</a>
-            <!-- <a class="btn" href="#" target="_blank" rel="noopener">Live Demo</a> -->
-          </div>
-        </article>
-
-        <article class="project card">
-          <h3>Liga BetPlay</h3>
-          <p class="subtitle">
-
-Aplicación de consola desarrollada en C# (.NET 9) con Entity Framework Core 8 + MySQL, diseñada para gestionar equipos, jugadores, estadísticas, cuerpo técnico, cuerpo médico y notificaciones del torneo Liga BetPlay.          <div class="tags">
-            <span class="tag">C#</span><span class="tag">EntityFrameCore8/span><span class="tag">MySQL</span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/LigaBetPlay_C-.git" target="_blank" rel="noopener">Repository</a>
-          </div>
-        </article>
-
-        <article class="project card">
-          <h3>Burger Menu</h3>
-          <p class="subtitle">“Este proyecto presenta un menú de hamburguesas desarrollado con HTML y CSS, mostrando de manera simple y atractiva una carta digital de restaurante.”</p>
-          <div class="tags">
-            <span class="tag">Html</span><span class="tag">Css</span>
-          <!-- TODO: cambia # por tu repo/demo -->
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <a class="btn" href="https://github.com/EduardoCastellanosP/Examen-Html-css.git" target="_blank" rel="noopener">Repository</a>
-             <a class="btn" href="https://burgermenu-exam.netlify.app/" target="_blank" rel="noopener">Live Demo</a> 
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-   
-  <!-- ---------- CONTACT ---------- -->
-  <section id="contact" class="reveal">
-    <div class="container contact">
-      <div class="card">
-        <h2 style="margin-top:0">Contacto</h2>
-        <p class="note">Estoy abierto a colaborar en cualquier proyecto.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
-          <a class="btn primary" href="mailto:eduardoeliascastellanospicon@gmail.com">Email</a>
-          <a class="btn" href="https://github.com/EduardoCastellanosP" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="https://www.linkedin.com/in/eduardo-elias-castellanos-2284b7212" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h3 style="margin-top:0">links</h3>
-        <ul style="margin:0;padding-left:18px;color:var(--muted)">
-          <li><a href="#home">Back to top</a></li>
-          <li><a href="#projects">See projects</a></li>
-          <li><a href="#skills">My skills</a></li>
-        </ul>
+    <!-- ====== IA ====== -->
+    <section id="ia" data-scene="3">
+      <div class="container">
+        <div class="head">
+          <div>
+            <div class="eyebrow mono rv">IA &amp; automatización</div>
+            <h2 class="rv d1">La IA no como moda, <span class="grad">sino como herramienta.</span></h2>
+          </div>
+          <p class="rv d2">Construyo agentes, automatizo procesos y uso IA generativa para crear contenido y acelerar el desarrollo.</p>
+        </div>
+        <div class="bento">
+          <div class="card b1 rv">
+            <span class="mono">Agente legal · Tutela Ya</span>
+            <h3>Agentes que entienden notas de voz</h3>
+            <p>Agente de IA tipo abogado que orienta a las personas en una tutela. Un enrutador clasifica cada mensaje, incluso notas de voz, y lo dirige al flujo correcto.</p>
+            <div class="flow"><span>Nota de voz</span><em>→</em><span>Transcripción</span><em>→</em><span>Router</span><em>→</em><span>Agente especializado</span></div>
+          </div>
+          <div class="card b2 rv d1">
+            <span class="mono">Automatización</span>
+            <h3>n8n y chatbots</h3>
+            <p>Flujos que conectan WhatsApp, hojas de cálculo y servicios para que los negocios dejen de hacer tareas a mano.</p>
+          </div>
+          <div class="card b3 rv">
+            <span class="mono">IA generativa</span>
+            <h3>Imagen y video</h3>
+            <p>Flujos de ComfyUI en servidores GPU de RunPod para producir imágenes y video con IA.</p>
+          </div>
+          <div class="card b4 rv d1">
+            <span class="mono">Desarrollo asistido</span>
+            <h3>Claude Code</h3>
+            <p>Desarrollo asistido por IA para iterar más rápido sin perder control sobre la calidad del código.</p>
+          </div>
+          <div class="card b5 rv d2">
+            <span class="mono">Docencia</span>
+            <h3>Docente de IA</h3>
+            <p>He enseñado inteligencia artificial: explicar algo bien es la mejor prueba de que se entiende.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ====== Experiencia ====== -->
+    <section id="experiencia" data-scene="4">
+      <div class="container">
+        <div class="head">
+          <div>
+            <div class="eyebrow mono rv">Experiencia</div>
+            <h2 class="rv d1">Trayectoria</h2>
+          </div>
+        </div>
+        <div class="timeline">
+          <div class="titem rv">
+            <div class="when"><b>Ene — Jul 2026</b>6 meses</div>
+            <div><h3>Desarrollador de software (apoyo)</h3><div class="org">SolvoGlobal</div>
+              <p>Desarrollo y mantenimiento de software, corrección de errores, pruebas, documentación técnica y revisiones de código. Integración en equipo con seguimiento en Jira, capacitaciones y reuniones técnicas.</p></div>
+          </div>
+          <div class="titem rv">
+            <div class="when"><b>Nov 2025 — Hoy</b>Proyectos propios</div>
+            <div><h3>Desarrollador de apps y software</h3><div class="org">Independiente · Voz &amp; Código</div>
+              <p>Apps móviles propias en Flutter, un sistema POS listo para la venta, sitios web para clientes reales y una app clínica con IA local en desarrollo.</p></div>
+          </div>
+          <div class="titem rv">
+            <div class="when"><b>Ene — Nov 2025</b>Floridablanca</div>
+            <div><h3>Técnico Laboral en Desarrollo de Software</h3><div class="org">Campuslands</div>
+              <p>Formación intensiva con proyectos en JavaScript, Python, Vue.js, .NET y Blazor, bases de datos MySQL y PostgreSQL, APIs REST y trabajo en equipo con Git.</p></div>
+          </div>
+          <div class="titem rv">
+            <div class="when"><b>2024</b>Curso</div>
+            <div><h3>Data Science y Machine Learning</h3><div class="org">Universidad Nacional de Colombia</div>
+              <p>Limpieza, análisis y visualización de datos y modelos predictivos con Python, pandas, scikit-learn y Jupyter.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Stack ====== -->
+    <section id="stack" data-scene="5">
+      <div class="container">
+        <div class="head">
+          <div>
+            <div class="eyebrow mono rv">Stack</div>
+            <h2 class="rv d1">Herramientas con las que <span class="grad">construyo.</span></h2>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="card rv"><h3>Móvil <span>01</span></h3><div class="chips"><span>Flutter</span><span>Dart</span><span>Android</span><span>iOS</span><span>Codemagic</span><span>Google Play</span></div></div>
+          <div class="card rv d1"><h3>Nube y backend <span>02</span></h3><div class="chips"><span>Firebase</span><span>Google Cloud</span><span>Supabase</span><span>APIs REST</span><span>C# / .NET</span><span>Blazor</span><span>EF Core</span></div></div>
+          <div class="card rv d2"><h3>Bases de datos <span>03</span></h3><div class="chips"><span>PostgreSQL</span><span>MySQL</span><span>SQLite</span><span>MongoDB</span></div></div>
+          <div class="card rv"><h3>Web <span>04</span></h3><div class="chips"><span>JavaScript</span><span>HTML</span><span>CSS</span><span>Vue.js</span><span>Netlify</span></div></div>
+          <div class="card rv d1"><h3>Datos e IA <span>05</span></h3><div class="chips"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>n8n</span><span>ComfyUI</span><span>Claude Code</span></div></div>
+          <div class="card rv d2"><h3>Forma de trabajo <span>06</span></h3><div class="chips"><span>Git</span><span>GitHub</span><span>Jira</span><span>Figma</span><span>Inglés B1</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Contacto ====== -->
+    <section class="contact" id="contacto" data-scene="6">
+      <div class="container">
+        <div class="eyebrow mono rv" style="justify-content:center">Contacto</div>
+        <h2 class="rv d1">¿Construimos<br/><span class="grad">algo juntos?</span></h2>
+        <p class="rv d2">Busco un equipo donde crear apps móviles y software que la gente use de verdad. Remoto, híbrido o presencial, y con disposición para reubicarme.</p>
+        <button class="mail rv d3" id="mail" data-mail="eduardoeliascastellanospicon@gmail.com">
+          eduardoeliascastellanospicon@gmail.com <small>Copiar</small>
+        </button>
+        <div class="socials rv d3">
+          <a href="https://www.linkedin.com/in/eduardo-elias-castellanos-2284b7212" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn</a>
+          <a href="https://github.com/EduardoCastellanosP" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.69.82.57A12 12 0 0 0 12 .3"/></svg>GitHub</a>
+          <a href="assets/Hoja_de_Vida_Eduardo_Castellanos.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Hoja de vida</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <div class="container footer-inner">
-      <span>© <span id="year"></span> Eduardo Elias Castellanos Picon</span>
-      <span>Built with ❤️ using HTML • CSS • JS</span>
+    <div class="container">
+      <span>© <span id="yr">2026</span> Eduardo Elías Castellanos Picón</span>
+      <span>Bucaramanga, Colombia · <a href="#inicio">Volver arriba ↑</a></span>
     </div>
   </footer>
+  <div class="toast" id="toast">Correo copiado ✓</div>
 
+  <!-- ====== UI script ====== -->
   <script>
-    // ---------- Navbar shrink on scroll ----------
-    const nav = document.querySelector('.navbar');
-    const onScroll = () => nav.classList.toggle('shrink', window.scrollY > 10);
-    window.addEventListener('scroll', onScroll); onScroll();
+  (() => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = (s, c = document) => c.querySelector(s);
+    const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+    document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // ---------- Reveal on view ----------
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-      })
-    },{threshold:.12});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    /* ---------- Intro: salto al hiperespacio ---------- */
+    const intro = $('#intro');
+    let seen = false;
+    try { seen = sessionStorage.getItem('ec-intro') === '1'; } catch (e) {}
+    function finishIntro() {
+      if (intro.classList.contains('done')) return;
+      intro.classList.add('done');
+      document.body.classList.remove('locked');
+      document.body.classList.add('ready');
+      try { sessionStorage.setItem('ec-intro', '1'); } catch (e) {}
+      window.dispatchEvent(new Event('intro-done'));
+      setTimeout(() => intro.remove(), 1000);
+    }
+    if (seen || reduce) { intro.style.display = 'none'; finishIntro(); }
+    else runWarp();
 
-    // ---------- Year ----------
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ---------- Animated Background (Particles) ----------
-    // Canvas partículas con parallax y respuesta al mouse. Sin librerías.
-    (function(){
-      const c = document.getElementById('bgCanvas');
-      const ctx = c.getContext('2d');
-      let w, h, dpr, particles = [], mouse = {x:0, y:0}, tick=0;
-
-      function resize(){
-        dpr = Math.max(window.devicePixelRatio || 1, 1);
-        w = c.width = Math.round(innerWidth * dpr);
-        h = c.height = Math.round(innerHeight * dpr);
-        c.style.width = innerWidth + 'px';
-        c.style.height = innerHeight + 'px';
+    function runWarp() {
+      const cv = $('#warp'), ctx = cv.getContext('2d'), flash = $('.flash', intro), name = $('.intro-name', intro);
+      let w, h, cx, cy, dpr = Math.min(devicePixelRatio || 1, 2);
+      const N = innerWidth < 700 ? 500 : 1100, stars = [];
+      function size() { w = cv.width = innerWidth * dpr; h = cv.height = innerHeight * dpr; cx = w / 2; cy = h / 2; }
+      size(); addEventListener('resize', size);
+      for (let i = 0; i < N; i++) stars.push({ x: (Math.random() - .5) * 2, y: (Math.random() - .5) * 2, z: Math.random(), pz: 0, hue: Math.random() < .2 ? 265 : (Math.random() < .5 ? 195 : 220) });
+      const T = 3600; let t0 = null, raf;
+      $('.skip', intro).addEventListener('click', () => { cancelAnimationFrame(raf); finishIntro(); });
+      setTimeout(() => name.classList.add('show'), 250);
+      function frame(t) {
+        if (!t0) t0 = t;
+        const p = Math.min((t - t0) / T, 1);
+        // aceleración: lento → hiperespacio
+        const speed = .0015 + Math.pow(p, 3.2) * .085;
+        ctx.fillStyle = `rgba(0,0,0,${p > .55 ? .22 : .5})`;
+        ctx.fillRect(0, 0, w, h);
+        const scale = Math.max(w, h) * .55;
+        for (const s of stars) {
+          s.pz = s.z; s.z -= speed;
+          if (s.z <= .002) { s.z = 1; s.pz = 1; s.x = (Math.random() - .5) * 2; s.y = (Math.random() - .5) * 2; }
+          const sx = cx + s.x / s.z * scale, sy = cy + s.y / s.z * scale;
+          const px = cx + s.x / s.pz * scale, py = cy + s.y / s.pz * scale;
+          const a = Math.min(1, (1 - s.z) * 1.4);
+          ctx.strokeStyle = `hsla(${s.hue},100%,${70 + p * 20}%,${a})`;
+          ctx.lineWidth = (1 - s.z) * 2.4 * dpr;
+          ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
+        }
+        if (p > .62) name.classList.remove('show');
+        if (p > .78) flash.style.opacity = Math.min(1, (p - .78) / .2);
+        if (p < 1) raf = requestAnimationFrame(frame);
+        else finishIntro();
       }
-      window.addEventListener('resize', resize); resize();
+      raf = requestAnimationFrame(frame);
+    }
 
-      const COUNT_BASE = 90; // ajusta densidad si quieres más/menos partículas
-      function init(){
-        particles = [];
-        const count = Math.floor((innerWidth*innerHeight)/ (14000)) + COUNT_BASE;
-        for(let i=0;i<count;i++){
-          particles.push({
-            x: Math.random()*w,
-            y: Math.random()*h,
-            vx:(Math.random()-.5)*.18*dpr,
-            vy:(Math.random()-.5)*.18*dpr,
-            r: (Math.random()*1.6 + .6)*dpr,
-            p: Math.random()*2*Math.PI
-          });
-        }
+    /* ---------- Nav ---------- */
+    const header = $('header');
+    const onScroll = () => header.classList.toggle('scrolled', scrollY > 30);
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    const burger = $('#burger'), links = $('#links');
+    burger.addEventListener('click', () => { burger.classList.toggle('open'); links.classList.toggle('open'); });
+    $$('#links a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('open'); links.classList.remove('open'); }));
+  })();
+  </script>
+  <script>
+  (() => {
+    const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+    /* nav activo */
+    const navMap = new Map($$('#links a').map(a => [a.getAttribute('href').slice(1), a]));
+    const ioNav = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { navMap.forEach(a => a.classList.remove('active')); navMap.get(e.target.id)?.classList.add('active'); }
+    }), { rootMargin: '-45% 0px -50% 0px' });
+    $$('section[id]').forEach(s => ioNav.observe(s));
+
+    /* reveal */
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+    $$('.rv').forEach(el => io.observe(el));
+
+    /* spotlight en tarjetas */
+    $$('.card').forEach(c => c.addEventListener('pointermove', e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }));
+
+    /* statement: palabras que se iluminan con el scroll */
+    const st = document.getElementById('statement');
+    const html = st.innerHTML.replace(/<em>(.*?)<\/em>/g, (_, t) => t.split(' ').map(w => `\u0001${w}`).join(' '));
+    st.innerHTML = html.split(/\s+/).map(w => w.startsWith('\u0001') ? `<span class="w hl">${w.slice(1)}</span>` : `<span class="w">${w}</span>`).join(' ');
+    const words = $$('.w', st);
+    function lightWords() {
+      const r = st.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight * .85 - r.top) / (r.height + innerHeight * .35)));
+      const n = Math.round(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('lit', i < n));
+    }
+    addEventListener('scroll', lightWords, { passive: true }); lightWords();
+
+    /* copiar correo */
+    const toast = document.getElementById('toast');
+    document.getElementById('mail').addEventListener('click', async e => {
+      const m = e.currentTarget.dataset.mail;
+      try { await navigator.clipboard.writeText(m); toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1800); }
+      catch (err) { location.href = 'mailto:' + m; }
+    });
+  })();
+  </script>
+
+  <!-- ====== Escena 3D (Three.js) ====== -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+    const canvas = document.getElementById('gl');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+    catch (e) { canvas.remove(); throw e; }
+
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+    camera.position.set(0, 0, 9);
+    scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+
+    const l1 = new THREE.PointLight(0x5b8cff, 60, 30); l1.position.set(-4, 3, 4); scene.add(l1);
+    const l2 = new THREE.PointLight(0xa78bfa, 50, 30); l2.position.set(4, -3, 3); scene.add(l2);
+    const l3 = new THREE.PointLight(0x7cf3ff, 40, 30); l3.position.set(0, 4, -2); scene.add(l3);
+
+    // Cromo iridiscente (dos tonos)
+    const glass = new THREE.MeshPhysicalMaterial({
+      color: 0xd6c9ff, metalness: 1, roughness: .12, iridescence: 1, iridescenceIOR: 1.6,
+      iridescenceThicknessRange: [180, 620], clearcoat: 1, clearcoatRoughness: .08, envMapIntensity: 1.7
+    });
+    const chrome = new THREE.MeshPhysicalMaterial({ color: 0xbfd4ff, metalness: 1, roughness: .16, iridescence: .7, clearcoat: .6, envMapIntensity: 1.6 });
+
+    // Objetos reales que se transforman con el scroll
+    const shapes = [
+      new THREE.Mesh(new THREE.IcosahedronGeometry(1.35, 0), glass),                 // hero: cristal facetado
+      new THREE.Mesh(new THREE.TorusKnotGeometry(.95, .3, 220, 32), chrome),        // sobre mí: nudo
+      new THREE.Mesh(new RoundedBoxGeometry(1.25, 2.5, .22, 8, .2), glass),          // proyectos: "teléfono"
+      new THREE.Mesh(new THREE.TorusGeometry(1.1, .38, 64, 160), chrome),            // IA: anillo
+      new THREE.Mesh(new THREE.OctahedronGeometry(1.3, 0), glass),                   // experiencia
+      new THREE.Mesh(new THREE.DodecahedronGeometry(1.25, 0), chrome),               // stack
+      new THREE.Mesh(new THREE.SphereGeometry(1.2, 96, 96), glass)                   // contacto
+    ];
+    const group = new THREE.Group(); scene.add(group);
+    shapes.forEach((m, i) => { m.visible = i === 0; m.scale.setScalar(i === 0 ? 1 : .001); group.add(m); });
+
+    // Polvo de estrellas sutil
+    const N = 700, pos = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { pos[i*3] = (Math.random()-.5)*30; pos[i*3+1] = (Math.random()-.5)*20; pos[i*3+2] = -Math.random()*20; }
+    const dustGeo = new THREE.BufferGeometry(); dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x9fc4ff, size: .03, transparent: true, opacity: .55 }));
+    scene.add(dust);
+
+    // Posición por sección (x en unidades de mundo relativas al ancho)
+    // x: fracción del ancho visible (±.5 = borde). Fuera del hero el objeto vive en los márgenes.
+    const layout = [
+      { x: .13, y: .95, s: .78 },  // hero: asoma arriba a la izquierda de la foto
+      { x: .5, y: .55, s: .66 },
+      { x: -.52, y: -.2, s: .64 },
+      { x: .5, y: .7, s: .66 },
+      { x: -.52, y: .9, s: .64 },
+      { x: .5, y: -.4, s: .66 },
+      { x: .42, y: 1.0, s: .62 }
+    ];
+    const sections = [...document.querySelectorAll('[data-scene]')];
+    let current = 0, target = 0, morph = 1, mobile = false, jump = false;
+    let mx = 0, my = 0;
+    addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
+
+    function resize() {
+      const w = innerWidth, h = innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      mobile = w < 1024;
+      canvas.style.opacity = '';
+    }
+    addEventListener('resize', resize); resize();
+
+    function pickScene() {
+      const mid = innerHeight * .5;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const r = sections[i].getBoundingClientRect();
+        if (r.top < mid) return +sections[i].dataset.scene;
       }
-      init(); window.addEventListener('resize', init);
+      return 0;
+    }
+    addEventListener('scroll', () => { target = pickScene(); }, { passive: true });
 
-      window.addEventListener('mousemove', (e)=>{
-        mouse.x = e.clientX * dpr;
-        mouse.y = e.clientY * dpr;
-      });
+    const viewW = () => 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z * camera.aspect;
+    const gx = new THREE.Vector3(), clock = new THREE.Clock();
+    let visible = true; document.addEventListener('visibilitychange', () => visible = !document.hidden);
 
-      function draw(){
-        tick++;
-        // fondo sutil
-        ctx.clearRect(0,0,w,h);
-        // malla de conexiones
-        for(let i=0;i<particles.length;i++){
-          const a = particles[i];
-          // movimiento base
-          a.x += a.vx; a.y += a.vy;
-          a.p += .005;
-          // envolvente
-          if(a.x<0) a.x=w; if(a.x>w) a.x=0;
-          if(a.y<0) a.y=h; if(a.y>h) a.y=0;
+    function tick() {
+      requestAnimationFrame(tick);
+      if (!visible) return;
+      const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
 
-          // atracción leve al mouse
-          const dx = (mouse.x||w/2)-a.x, dy = (mouse.y||h/2)-a.y;
-          const dist = Math.hypot(dx,dy);
-          const force = Math.max(0, 120*dpr - dist) / (120*dpr);
-          a.x -= (dx/dist||0) * (.15*dpr) * force;
-          a.y -= (dy/dist||0) * (.15*dpr) * force;
-        }
+      // cambio de forma: encoge → cambia → crece
+      if (target !== current) { morph -= dt * 3.2; if (morph <= 0) { shapes[current].visible = false; current = target; shapes[current].visible = true; morph = 0; jump = true; } }
+      else if (morph < 1) morph = Math.min(1, morph + dt * 2.2);
+      const e = 1 - Math.pow(1 - Math.max(morph, 0), 3);
 
-        // líneas entre partículas cercanas
-        for(let i=0;i<particles.length;i++){
-          const a = particles[i];
-          for(let j=i+1;j<particles.length;j++){
-            const b = particles[j];
-            const dx = a.x-b.x, dy = a.y-b.y;
-            const d = dx*dx + dy*dy;
-            const max = 90*dpr; // distancia
-            if(d < max*max){
-              const alpha = 0.12 * (1 - Math.sqrt(d)/max);
-              ctx.strokeStyle = `rgba(102,224,255,${alpha})`;
-              ctx.lineWidth = dpr*.6;
-              ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-            }
-          }
-        }
+      const L = layout[current];
+      const vw = viewW();
+      const hero = current === 0;
+      const tx = mobile ? (hero ? .18 * vw : (L.x > 0 ? .35 : -.35) * vw) : L.x * vw;
+      const ty = mobile ? (hero ? -2.2 : L.y * 1.5) : L.y * 2;
+      gx.set(tx, ty, hero && !mobile ? -1.5 : 0);
+      if (jump) { group.position.copy(gx); jump = false; } else group.position.lerp(gx, .05);
+      const sc = (mobile ? .8 : 1) * L.s * (.001 + e);
+      shapes[current].scale.setScalar(sc);
 
-        // partículas
-        for(const p of particles){
-          ctx.fillStyle = 'rgba(158,244,255,.9)';
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r + Math.sin(p.p)*.3*dpr, 0, Math.PI*2);
-          ctx.fill();
-        }
+      const spin = reduce ? 0 : 1;
+      group.rotation.y += dt * .25 * spin + (mx * .6 - group.rotation.y * 0) * 0;
+      group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, my * .5 + Math.sin(t * .4) * .15 * spin, .05);
+      shapes[current].rotation.z = Math.sin(t * .3) * .2 * spin;
+      group.position.y += Math.sin(t * .9) * .003 * spin;
+      dust.rotation.y = t * .01 * spin; dust.position.x = -mx * .4; dust.position.y = my * .3;
 
-        requestAnimationFrame(draw);
-      }
-      draw();
-    })();
+      renderer.render(scene, camera);
+    }
+
+    const start = () => { canvas.classList.add('on'); tick(); };
+    if (document.body.classList.contains('ready')) start(); else addEventListener('intro-done', start, { once: true });
   </script>
 </body>
 </html>
